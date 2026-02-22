@@ -4,8 +4,8 @@ class InvalidIdException(Exception):
 
 class UnsignedInt:
     def validated_val(self, val):
-        if val < 0:
-            raise InvalidIdException(f'{self.val_name} has to be non negative!')
+        if val < 0 or type(val) is not int:
+            raise InvalidIdException(f'{self.val_name} has to be non negative integer!!!')
         return val
     
     def __init__(self, val, val_name):
@@ -16,10 +16,10 @@ class UnsignedInt:
         return str(self.val)
     
     def __int__(self):
-        return val
+        return int(self.val)
 
     def __eq__(self, rhs):
-        return self.val == rhs.val
+        return int(rhs) == int(self)
 
     
 class Customer:
