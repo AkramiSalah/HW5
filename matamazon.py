@@ -12,6 +12,14 @@ class NonNegativeVal:
         self.val_name = val_name
         self.val = self.validated_val(val)
 
+    def __repr__(self):
+        return str(self.val)
+    
+    def __int__(self):
+        return val
+
+    def __eq__(self, rhs):
+        return self.val == rhs.val
 
     
 class Customer:
