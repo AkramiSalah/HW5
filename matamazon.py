@@ -2,6 +2,8 @@ class InvalidIdException(Exception):
     pass
 
 class Entry:
+    def validated_val(self, val):
+        return -1
     def __init__(self, val, val_name):
         self.val_name = val_name
         self.val = self.validated_val(val)
@@ -22,6 +24,13 @@ class UnsignedIntField(Entry):
         isValidArgument = type(rhs) is int or type(rhs) is type(self) 
         return isValidArgument and  int(rhs) == int(self)
 
+
+class FloatField(Entry):
+    def validated_val(self, val):
+        if type(val) is not float or type(val) is not int:
+            raise InvalidIdException(f'{self.val_name} has to be a non negative float, or at the very least a non negative integer!!!')
+        return val
+
 class StringField(Entry):
     def validated_val(self, val):
         if type(val) is not str:
@@ -31,7 +40,6 @@ class StringField(Entry):
     def __repr__(self):
         #override
         return f"{self.val_name}='{self.val}'"
-
 
 def Field(val, val_name):
     if type(val) is str:
