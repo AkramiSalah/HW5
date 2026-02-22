@@ -2,7 +2,7 @@ class InvalidIdException(Exception):
     pass
 
 
-class NonNegativeVal:
+class UnsignedInt:
     def validated_val(self, val):
         if val < 0:
             raise InvalidIdException(f'{self.val_name} has to be non negative!')
@@ -24,7 +24,7 @@ class NonNegativeVal:
     
 class Customer:
     def __init__(self, id, name, city, address):
-        self.id = NonNegativeVal(id, "id")
+        self.id = UnsignedInt(id, "id")
         self.name = name
         self.city = city
         self.address = address
@@ -37,7 +37,15 @@ class Supplier(Customer):
 class Product:
     def __init__(self, id, name, price, supplier_id,  quantity):
         self.name = name
-        self.id = NonNegativeVal(id, "id")
-        self.price = NonNegativeVal(price, "price")
-        self.supplier_id = NonNegativeVal(supplier_id, "supplier_id")
-        self.quantity = NonNegativeVal(quantity, "quantity")
+        self.id = UnsignedInt(id, "id")
+        self.price = UnsignedInt(price, "price")
+        self.supplier_id = UnsignedInt(supplier_id, "supplier_id")
+        self.quantity = UnsignedInt(quantity, "quantity")
+
+class Order:
+    def __init__(self, id, customer_id, product_id, quantity, total_price):
+        self.id = UnsignedInt(id)   
+        self.customer_id = UnsignedInt(customer_id)   
+        self.product_id = UnsignedInt(product_id)   
+        self.quantity = UnsignedInt(quantity)   
+        self.total_price = UnsignedInt(total_price)   
