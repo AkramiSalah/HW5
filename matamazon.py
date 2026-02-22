@@ -2,19 +2,21 @@ class InvalidIdException(Exception):
     pass
 
 
-class IdentifiedEntity:
-    def validated_id(self, id):
-        if id < 0:
-            raise InvalidIdException("id has to be non negative!")
-        return id
+class NonNegativeVal:
+    def validated_val(self, val):
+        if val < 0:
+            raise InvalidIdException(f'{self.val_name} has to be non negative!')
+        return val
     
-    def __init__(self, id):
-        self.id = self.validated_id(id)
+    def __init__(self, val, val_name):
+        self.val_name = val_name
+        self.val = self.validated_val(val)
+
 
     
-class Customer(IdentifiedEntity):
+class Customer:
     def __init__(self, id, name, city, address):
-        super().__init__(id)
+        self.id = NonNegativeVal(id, "id")
         self.name = name
         self.city = city
         self.address = address
@@ -25,4 +27,9 @@ class Supplier(Customer):
 
 
 class Product:
-    def __init__(self, id, name, city, address):
+    def __init__(self, id, name, price, supplier_id,  quantity):
+        self.name = name
+        self.id = NonNegativeVal(id, "id")
+        self.price = NonNegativeVal(price, "price")
+        self.supplier_id = NonNegativeVal(supplier_id, "supplier_id")
+        self.quantity = NonNegativeVal(quantity, "quantity")
