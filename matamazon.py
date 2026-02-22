@@ -7,7 +7,7 @@ class Entry:
         self.val = self.validated_val(val)
 
     def __repr__(self):
-        res = f"{self.val_name}={self.val}"
+        return f"{self.val_name}={self.val}"
 
 class UnsignedIntField(Entry):
     def validated_val(self, val):
