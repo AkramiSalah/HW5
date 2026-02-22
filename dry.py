@@ -45,7 +45,21 @@ my_dictionary = { x : f"{x} is divided by {n}.\n" if x % n == 0 else \
 print(*my_dictionary.values(), sep= "")
 
 
-## Q2
+
+
+##Q3
+
+for i in range(0, max(ord('9'), ord('z'), ord('Z'))+1):
+    if chr(i).isalpha() or chr(i).isdigit():
+        print(f"The ASCII number {i} represent the char '{chr(i)}'")
+
+#this code print every char that is alphanumeric, and says what is its ASCII code.
+
+_ = [print(f"The ASCII number {i} represent the char '{chr(i)}'") \
+    for i in range(0, max(ord('9'), ord('z'), ord('Z'))+1) if chr(i).isalpha() or chr(i).isdigit()]
+
+
+## Q4
 list_c = [80, 121, 116, 104, 111, 110, 32, 105, 115, 32, 102, 117, 110, 33]
 
 tmp = ""
@@ -62,5 +76,5 @@ tmp_chr = "".join(([chr(ch) for ch in list_c]))
 print(tmp_chr)
 
 if __name__ == "__main__":
-    
+    print()
 
