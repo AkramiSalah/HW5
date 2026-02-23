@@ -71,6 +71,7 @@ class ID(UnsignedIntField):
             InvalidIdException,
             f'{val_name} has to be a non-negative integer!!!'
         )
+    
 
 class CustomerID(ID):
     def __init__(self, val):
@@ -116,11 +117,11 @@ class City(StringField):
                 val_name = "city",
         )
 
-class Adress(StringField):
+class Address(StringField):
     def __init__(self, val):
             super().__init__(
                 val,
-                val_name = "adress",
+                val_name = "address",
         )
 
 
