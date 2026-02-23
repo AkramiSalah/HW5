@@ -33,7 +33,7 @@ class UnsignedField(Field):
         return val
 
 class UnsignedIntField(UnsignedField):
-    def __init__(self, val, val_name, exception , exception_message ):
+    def __init__(self, val, val_name, exception = None, exception_message = None ):
         super().__init__(val, val_name, int, exception, exception_message)
     
     def __int__(self):
@@ -45,12 +45,13 @@ class UnsignedIntField(UnsignedField):
 
 
 class UnsignedFloatField(UnsignedField):
-    def __init__(self, val, val_name, exception, exception_message):
+    def __init__(self, val, val_name, exception = None, exception_message = None):
         super().__init__(val, val_name, float, exception, exception_message)
+
 
 class StringField(Field):
     def validated_val(self, val):
-        return super().validated_val(val):
+        return super().validated_val(val)
     
     def __init__(self, val, val_name):
         super().__init__(
@@ -60,6 +61,7 @@ class StringField(Field):
     def __repr__(self):
         #override
         return f"{self.val_name}='{self.val}'"
+
 
 class ID(UnsignedIntField):
     def __init__(self, val, val_name):
@@ -87,5 +89,9 @@ class Quantity(UnsignedIntField):
         super().__init__(
             val,
             val_name,
-        )#we can assume quantitiy is always valid
+            exception = ValueError,
+            exception_message=f"{val_name} has to be a non-negative Integer!!!"
+        )
+
+
 
