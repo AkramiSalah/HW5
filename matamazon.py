@@ -13,7 +13,6 @@ class Customer:
 class Supplier(Customer):
     pass
 
-
 class Product:
     def __init__(self, id, name, price, supplier_id, quantity):
         self.name = StringField(name, "name")
@@ -31,4 +30,7 @@ class Order:
         self.customer_id = UnsignedIntField(customer_id, "customer_id")   
         self.product_id = UnsignedIntField(product_id, "product_id")   
         self.quantity = UnsignedFloatField(quantity, "quantity")   
-        self.total_price = UnsignedFloatField(total_price, "total_price")   
+        self.total_price = UnsignedFloatField(total_price, "total_price")
+    
+    def __repr__(self):
+        return f"{type(self)}({self.id}, {self.customer_id}, {self.product_id}, {self.quantity}, {self.total_price})"
