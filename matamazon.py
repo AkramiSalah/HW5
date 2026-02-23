@@ -15,8 +15,8 @@ class Supplier(Customer):
 
 class Product:
     def __init__(self, id, name, price, supplier_id, quantity):
-        self.name = Name(name)
         self.id = ID(id)
+        self.name = Name(name)
         self.price = Price(price)
         self.supplier_id = SupplierID(supplier_id)
         self.quantity = Quantity(quantity)
@@ -27,8 +27,8 @@ class Product:
 class Order:
     def __init__(self, id, customer_id, product_id, quantity, total_price):
         self.id = ID(id)   
-        self.customer_id = ID(customer_id)   
-        self.product_id = ID(product_id)   
+        self.customer_id = CustomerID(customer_id)   
+        self.product_id = ProductID(product_id)   
         self.quantity = Quantity(quantity)   
         self.total_price = Price(total_price)
     
