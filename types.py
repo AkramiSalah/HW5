@@ -64,13 +64,25 @@ class StringField(Field):
 
 
 class ID(UnsignedIntField):
-    def __init__(self, val, val_name):
+    def __init__(self, val, val_name = "id"):
         super().__init__(
             val,
             val_name,
             InvalidIdException,
             f'{val_name} has to be a non-negative integer!!!'
         )
+
+class CustomerID(ID):
+    def __init__(self, val):
+        super().__init__(val, val_name="customer_id")
+
+class ProductID(ID):
+    def __init__(self, val):
+        super().__init__(val, val_name="product_id")
+
+class SupplierID(ID):
+    def __init__(self, val):
+        super().__init__(val, val_name="supplier_id")
 
 class Price(UnsignedFloatField):
     def __init__(self, val, val_name = "price"):
@@ -81,9 +93,6 @@ class Price(UnsignedFloatField):
             exception_message = f'{val_name} has to be a non-negative number!!!'
         )
 
-class String(StringField):
-    pass
-
 class Quantity(UnsignedIntField):
     def __init__(self, val, val_name = "quantity"):
         super().__init__(
@@ -93,5 +102,25 @@ class Quantity(UnsignedIntField):
             exception_message=f"{val_name} has to be a non-negative Integer!!!"
         )
 
+class Name(StringField):
+    def __init__(self, val):
+            super().__init__(
+                val,
+                val_name = "name",
+        )
+
+class City(StringField):
+    def __init__(self, val):
+            super().__init__(
+                val,
+                val_name = "city",
+        )
+
+class Adress(StringField):
+    def __init__(self, val):
+            super().__init__(
+                val,
+                val_name = "adress",
+        )
 
 
