@@ -36,107 +36,87 @@ class Order:
     def __repr__(self):
         return f"Order({self.id}, {self.customer_id}, {self.product_id}, {self.quantity}, {self.total_price})"
 
-# class SystemContainer:
-#     def __init__(self);
-#         self.container = {}
-
-#     def append(self, entity_id, entity):
-#         if entity_id is in self.container:
-#             return False
-#         self.container[entity.id] = entity
-#         return True
-    
-#     def remove(self, entity_id):
-#         if entity_id is not in self.container:
-#             return False
-
-#         del self.container[entity.id]
-#         return True
-
-# class Products(SystemContainer):
-#     def append(self, entity_id, entity):
-#         append_res = super().append(entity_id, entity)
-#         if append_res:
-#             return True
-#         # now we can assume the append res is false 
-#         # so we gotta do additional checks..
-#         if self.container[entity.id].supplier == entity.supplier_id:
-#                 self.container[entity.id] = entity
-#             else:
-#                 raise InvalidIdException("another supplier owns this product_id!!!")
-
-
-
 class MatamazonSystem:
     def __init__(self):
         self.customers = {} # custumer.id -> customer
         self.suppliers = {} # supplier.id -> supplier 
         self.products = {} # product id -> product
         self.orders = {} # order id -> order
+        self.order_id_counter = 1
     
     def register_entity(self, entity, is_customer):
-        container = suppliers
+        container = self.suppliers
         if is_customer:
-            container = customers
+            container = self.customers
 
-        if entity.id is in container:
-            raise InvalidIdException( entity.__name__ + " is already registered!!!")
+        if entity.id in container:
+            raise InvalidIdException( type(entity).__name__ + " is already registered!!!")
         container[entity.id] = entity
 
         
     def add_or_update_product(self, product):
-        if product.id in products.keys():
-            if products[product.id].supplier == product.supplier_id:
-                products[product.id] = product
+        if product.id in self.products.keys():
+            if self.products[product.id].supplier_id == product.supplier_id:
+                self.products[product.id] = product
             else:
                 raise InvalidIdException("another supplier owns this product_id!!!")
         else:
-            products[product.id] = product
+            self.products[product.id] = product
 
     def place_order(self, customer_id, product_id, quantity = 1):
-        if product_id is not in products.keys():
+        if product_id not in self.products.keys():
             return "The product does not exist in the system"
-        if customer_id is not in customers.keys():
+        if customer_id not in self.customers.keys():
             return "The customer does not exist in the system"
 
-        product = products[product_id]
-        customer = customers[customer_id]
+        product = self.products[product_id]
 
         if product.quantity < quantity:
             return "The quantity requested for this product is greater than the quantity in stock."
 
-        order_id_str = str(product_id) + str(customer_id) # i hope this is unique enough..
-        order_id = int(order_id_str)
         order_price = product.price * quantity
-        order = Order(order_id, customer_id, product_id, quantity, order_price)
-        orders[order.id] = order
+        order = Order(self.order_id_counter, customer_id, product_id, quantity, order_price)
+        self.order_id_counter += 1
+        product.quantity -= quantity
+        self.orders[order.id] = order
     
     def remove_object(self, id, class_type):
         class_type = class_type.strip().lower()
         if class_type == "order":
             return self.remove_order(id)
         
-        id_pairs_of_entities_related_to_order = [(order.customer_id,]
-
-
-        self.customers
-        self.suppliers 
-        self.products 
-        self.orders  
+        for order in self.orders.values():
+            if self.get_id(order, class_type) == id:
+                raise InvalidIdException(
+                    f"cannot delete this {class_type} its still in use!!!"
+                )
+        
+        if class_type == "supplier":
+            del self.suppliers[id]
+        elif class_type == "product":
+            del self.products[id]
+        elif class_type == "customer":
+            del self.customers[id]
 
     def remove_order(self, id):
         id = ID(id) 
-        if id is not in orders:
+        if id not in self.orders:
             raise InvalidIdException("non existant ordder id!!!")
-        order_quantity = order.quantity
-        del orders[id]
+        order_quantity = self.orders[id].quantity
+        self.products[self.orders[id].product_id].quantity += order_quantity
+        del self.orders[id]
         return order_quantity
 
-    def product_owner(self, supplier_id, product_id):
-        for product in products.values():
-            if product.id == product_id:
-                return product.supplier_id
-        return -1  
+
+    def get_id(self, order, class_type):
+        if class_type == "supplier":
+            product = self.products[order.product_id]
+            return product.supplier_id
+        elif class_type == "product":
+            return order.product_id
+        elif class_type == "customer":
+            return order.customer_id
+
 
     
 
