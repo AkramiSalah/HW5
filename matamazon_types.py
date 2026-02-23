@@ -25,12 +25,25 @@ class Field:
     def __repr__(self):
         return f"{self.val_name}={self.val}"
 
+    def __lt__(self, other):
+        return self.val < other.val
+
+    def __isub__(self, other):
+        self.val -= other.val
+
+    def __iadd__(self, other):
+        self.val += other.val
+
+    
+
 class UnsignedField(Field):
     def validated_val(self, val):
         val = super().validated_val(val)
         if val < 0:
             self.error()
         return val
+
+    
 
 class UnsignedIntField(UnsignedField):
     def __init__(self, val, val_name, exception = None, exception_message = None ):
@@ -93,6 +106,9 @@ class Price(UnsignedFloatField):
             exception = InvalidPriceException,
             exception_message = f'{val_name} has to be a non-negative number!!!'
         )
+
+    def __mul__(self, other):
+        return Price(self.val * other.val)
 
 class Quantity(UnsignedIntField):
     def __init__(self, val, val_name = "quantity"):
