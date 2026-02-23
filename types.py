@@ -6,14 +6,20 @@ class InvalidPriceException(Exception):
 class Field:
     #this is an abstract calss!!!! there should never actually be a Field obj thats just a Field only through polymorphism
     def error(self):
-        raise self.exception(self.exception_message)
+        if self.exception:
+            raise self.exception(self.exception_message)
+        raise Exception("generic Exception")
 
     def validated_val(self, val):
         if type(val) is not self.type_T:
             self.error()
-        return True
-    def __init__(self, val, val_name, type_T, exception, exception_message):
+        return val
+
+    def __init__(self, val, val_name, type_T, exception = None, exception_message = None):
         self.val_name = val_name
+        self.type_T = type_T
+        self.exception = exception 
+        self.exception_message = exception_message
         self.val = self.validated_val(val)
 
     def __repr__(self):
@@ -21,13 +27,13 @@ class Field:
 
 class UnsignedField(Field):
     def validated_val(self, val):
-        if super().validated_val(val):
-            if val >= 0:
-                return val
-        self.error()
+        val = super().validated_val(val)
+        if val < 0:
+            self.error()
+        return val
 
 class UnsignedIntField(UnsignedField):
-    def __init__(self, val, val_name, type_T, exception, exception_message):
+    def __init__(self, val, val_name, exception , exception_message ):
         super().__init__(val, val_name, int, exception, exception_message)
     
     def __int__(self):
@@ -39,24 +45,47 @@ class UnsignedIntField(UnsignedField):
 
 
 class UnsignedFloatField(UnsignedField):
-    def __init__(self, val, val_name, type_T, exception, exception_message):
+    def __init__(self, val, val_name, exception, exception_message):
         super().__init__(val, val_name, float, exception, exception_message)
 
 class StringField(Field):
-    # def validated_val(self, val):
-    #     if type(val) is not str:
-    #         raise InvalidIdException(f'{self.val_name} has to be a string!!!')
-    #     return val
+    def validated_val(self, val):
+        return super().validated_val(val):
+    
+    def __init__(self, val, val_name):
+        super().__init__(
+            val, val_name, str
+        )# we assume StringFields are always valid!
 
     def __repr__(self):
         #override
         return f"{self.val_name}='{self.val}'"
 
 class ID(UnsignedIntField):
-    def __init__(self, val, val_name = "id"):
-        self.exception = InvalidIdException
-        self.exception_message = f'{val_name} has to be a non-negative integer!!!'
-        super().__init__(val, val_name, int, self.exception, self.exception_message)
+    def __init__(self, val, val_name):
+        super().__init__(
+            val,
+            val_name,
+            InvalidIdException,
+            f'{val_name} has to be a non-negative integer!!!'
+        )
 
 class Price(UnsignedFloatField):
-    def 
+    def __init__(self, val, val_name = "price"):
+        super().__init__(
+            val,
+            val_name,
+            exception = InvalidPriceException,
+            exception_message = f'{val_name} has to be a non-negative number!!!'
+        )
+
+class String(StringField):
+    pass
+
+class Quantity(UnsignedIntField):
+    def __init__(self, val, val_name = "quantity"):
+        super().__init__(
+            val,
+            val_name,
+        )#we can assume quantitiy is always valid
+
