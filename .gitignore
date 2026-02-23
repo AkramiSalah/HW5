@@ -1,2 +1,4 @@
 test_customer.py
 __pycache__/
+tests/
+test_matamazon.py
