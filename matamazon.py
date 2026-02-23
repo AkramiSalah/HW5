@@ -1,4 +1,4 @@
-from types import ID, Price, String, Quantity, Name, Address, CustomerID, ProductID
+from matamazon_types import *
 
 class Customer:
     def __init__(self, id, name, city, address):
@@ -8,10 +8,11 @@ class Customer:
         self.address = Address(address)
     
     def __repr__(self):
-        return f"{type(self)}({self.id}, {self.name}, {self.city}, {self.address})"
+        return f"Customer({self.id}, {self.name}, {self.city}, {self.address})"
 
 class Supplier(Customer):
-    pass
+    def __repr__(self):
+        return f"Supplier({self.id}, {self.name}, {self.city}, {self.address})"
 
 class Product:
     def __init__(self, id, name, price, supplier_id, quantity):
@@ -22,7 +23,7 @@ class Product:
         self.quantity = Quantity(quantity)
 
     def __repr__(self):
-        return f"{type(self)}({self.id}, {self.name}, {self.price}, {self.supplier_id}, {self.quantity})"
+        return f"Product({self.id}, {self.name}, {self.price}, {self.supplier_id}, {self.quantity})"
 
 class Order:
     def __init__(self, id, customer_id, product_id, quantity, total_price):
@@ -33,4 +34,4 @@ class Order:
         self.total_price = Price(total_price)
     
     def __repr__(self):
-        return f"{type(self)}({self.id}, {self.customer_id}, {self.product_id}, {self.quantity}, {self.total_price})"
+        return f"Order({self.id}, {self.customer_id}, {self.product_id}, {self.quantity}, {self.total_price})"
